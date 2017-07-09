@@ -6,13 +6,7 @@ spring:
           uri: https://github.com/gpais/reactive/tree/master/config/src/main/resources/shared
           repos:
             - patterns: multi-repo-demo-*
-              uri: https://github.com/gpais/reactive/tree/master/config/src/main/resources/shared  cloud:
-    config:
-      server:
-        native:
-          search-locations: classpath:/shared
-  profiles:
-     active: native
+              uri: https://github.com/gpais/reactive/tree/master/config/src/main/resources/shared
 
 server:
   port: 8888
