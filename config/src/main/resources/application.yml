@@ -2,6 +2,13 @@ spring:
   cloud:
     config:
       server:
+        git:
+          uri: https://github.com/gpais/reactive/tree/master/config/src/main/resources/shared
+          repos:
+            - patterns: multi-repo-demo-*
+              uri: https://github.com/gpais/reactive/tree/master/config/src/main/resources/shared  cloud:
+    config:
+      server:
         native:
           search-locations: classpath:/shared
   profiles:
@@ -10,6 +17,3 @@ spring:
 server:
   port: 8888
 
-security:
-  user:
-    password: ${CONFIG_SERVICE_PASSWORD}

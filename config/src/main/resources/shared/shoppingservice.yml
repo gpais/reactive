@@ -1,0 +1,13 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: shoppingservice
+management:
+    context-path: "/"
+    security:
+        enabled: false
+    health:
+        mail:
+            enabled: false # When using the MailService, configure an SMTP server and set this to true
+      
