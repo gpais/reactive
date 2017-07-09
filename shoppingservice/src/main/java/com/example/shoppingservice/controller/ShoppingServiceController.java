@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.stream.Stream;
 
 import org.reactivestreams.Publisher;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +34,9 @@ public class ShoppingServiceController {
 		return null;
 	}
 
-	@GetMapping("/retrieveItems")
+	@GetMapping(value="/retrieveItems", produces=MediaType.TEXT_EVENT_STREAM_VALUE)
 	Flux<Item> list() {
+		
 		Flux<Long> interval = Flux.interval(Duration.ofSeconds(2l));
 		
 		Flux<String> itemNames=Flux.fromStream(Stream.of("couch","lamp","potrait","paint","cage", "dvd"));
