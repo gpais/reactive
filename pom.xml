@@ -12,6 +12,7 @@
 		<module>eureka</module>
 		<module>shoppingservice</module>
 		<module>servicegateway</module>
+	    <module>config</module>
 	</modules>
 
 </project>
