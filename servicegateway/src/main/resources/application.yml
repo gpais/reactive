@@ -1,0 +1,30 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: servicegateway
+management:
+    context-path: "/"
+    security:
+        enabled: false
+    health:
+        mail:
+            enabled: false # When using the MailService, configure an SMTP server and set this to true
+zuul:
+  routes:
+    shoppingservice:
+      path: /shoppingservice/**
+      serviceId: shoppingservice
+  host:
+    socket-timeout-millis: 100000
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+ribbon:
+  ReadTimeout: 0
+  ConnectTimeout: 0 
+  eureka:
+    enabled: true  
