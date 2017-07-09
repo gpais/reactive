@@ -3,11 +3,17 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/gpais/reactive/tree/master/config/src/main/resources/shared
-          repos:
-            - patterns: multi-repo-demo-*
-              uri: https://github.com/gpais/reactive/tree/master/config/src/main/resources/shared
-
+          uri: https://github.com/gpais/myconfigs.git
+  
 server:
   port: 8888
-
+management:
+    context-path: "/"
+    security:
+        enabled: false
+    health:
+        mail:
+            enabled: false # When using the MailService, configure an SMTP server and set this to true
+security:
+  user:
+    password: pass

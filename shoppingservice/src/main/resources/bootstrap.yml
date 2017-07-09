@@ -1,6 +1,12 @@
 spring:
   application:
     name: shoppingservice
-
+  cloud:
+    config:
+      uri: http://localhost:8888
+      password: pass
+      username: user
+      discovery:
+          enabled: true
 info:
   description: shoppingservice Server

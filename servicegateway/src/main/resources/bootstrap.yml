@@ -1,3 +1,6 @@
 spring:
   application:
     name: servicegateway
+  cloud:
+    config:
+      uri: http://config:8888
