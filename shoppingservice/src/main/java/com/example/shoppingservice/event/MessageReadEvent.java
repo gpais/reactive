@@ -1,0 +1,14 @@
+package com.example.shoppingservice.event;
+
+public class MessageReadEvent {
+ 
+    private final String id;
+ 
+    public MessageReadEvent(String id) {
+        this.id = id;
+    }
+ 
+    public String getId() {
+        return id;
+    }
+}
