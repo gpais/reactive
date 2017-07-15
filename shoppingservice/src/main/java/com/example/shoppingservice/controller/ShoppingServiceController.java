@@ -22,9 +22,11 @@ import org.springframework.web.context.request.async.DeferredResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import com.example.shoppingservice.aggregate.MessagesAggregate;
 import com.example.shoppingservice.command.CreateMessageCommand;
 import com.example.shoppingservice.command.MarkReadMessageCommand;
 import com.example.shoppingservice.model.Item;
+import com.example.shoppingservice.repo.MessagesAggregateRepo;
 import com.example.shoppingservice.request.CreateRequest;
 
 
@@ -33,6 +35,8 @@ public class ShoppingServiceController {
 	@Autowired
     private CommandGateway commandGateway;
 	
+	@Autowired
+	private MessagesAggregateRepo repository;
 	
 	@Autowired
 	private EntityManager entityManager;
@@ -65,13 +69,20 @@ public class ShoppingServiceController {
 
 	@PostMapping("/create")
 	public DeferredResult<Object> create(@RequestBody CreateRequest request) throws InterruptedException, ExecutionException {
+		String referemce=(String) commandGateway.send(new CreateMessageCommand(UUID.randomUUID().toString(), "Hello, how is your day? :-)")).get();
 		DeferredResult<Object> deferredResult = new DeferredResult<Object>();
-		Mono.fromFuture( commandGateway.send(new CreateMessageCommand(UUID.randomUUID().toString(), "Hello, how is your day? :-)")))
-		.subscribe(a->deferredResult.setResult(a), e->deferredResult.setErrorResult(e));
-		
+//		Mono.fromFuture( commandGateway.send(new CreateMessageCommand(UUID.randomUUID().toString(), "Hello, how is your day? :-)")))
+//		.map(b->repository.findById((String)b).get())
+////		.and(uuid->Mono.fromFuture(commandGateway.send(new MarkReadMessageCommand((String) uuid))))
+//		.subscribe(a->deferredResult.setResult(a), e->deferredResult.setErrorResult(e));
+//		 
      
 //		 personStream.subscribe(a->deferredResult.setResult(a));
-		 
+		 Iterable<MessagesAggregate> value = repository.findAll();
+		 value.forEach(a->{
+			 System.out.print(a);
+		 });
+		deferredResult.setResult("sucess");
 		 return deferredResult;
 	}
 	

@@ -15,11 +15,11 @@ import com.example.shoppingservice.event.MessageReadEvent;
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 
-//@Entity
+@Entity
 public class MessagesAggregate {
 
     @AggregateIdentifier
-//    @Id
+    @Id
     private String id;
     
     private String status;

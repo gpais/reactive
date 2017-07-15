@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
 @Configuration
-@EnableJpaRepositories("com.mobacar.repo")
+@EnableJpaRepositories("com.example.shoppingservice.repo")
 // @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 @EntityScan(value={"org.axonframework.eventhandling.saga.repository.jpa"

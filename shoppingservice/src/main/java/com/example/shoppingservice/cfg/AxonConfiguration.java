@@ -20,13 +20,18 @@ import org.axonframework.eventhandling.AnnotationEventListenerAdapter;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.saga.repository.SagaStore;
 import org.axonframework.eventhandling.saga.repository.jpa.JpaSagaStore;
+import org.axonframework.eventsourcing.CachingEventSourcingRepository;
+import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.EventSourcingRepository;
+import org.axonframework.eventsourcing.SnapshotTriggerDefinition;
+import org.axonframework.eventsourcing.Snapshotter;
 import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine;
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor;
 import org.axonframework.monitoring.NoOpMessageMonitor;
+import org.axonframework.spring.eventsourcing.SpringAggregateSnapshotterFactoryBean;
 import org.axonframework.spring.messaging.unitofwork.SpringTransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +57,9 @@ public class AxonConfiguration {
      @PersistenceContext
      private EntityManager entityManager;
     
+     @Autowired
+     private Snapshotter snapshotter;
+     
      @Bean
      public SagaStore<Object> sagaStore(EntityManagerProvider provider) {
      return new JpaSagaStore(provider);
@@ -77,6 +85,7 @@ public class AxonConfiguration {
      
      @Bean("axontransactionmanager")
      public TransactionManager transactionManager() {
+//    	 SnapshotTriggerDefinition
     	 return new SpringTransactionManager(platformTransactionManager);
      }
      
@@ -91,14 +100,27 @@ public class AxonConfiguration {
 //     return new GenericJpaRepository<>(entityManagerProvider(), Account.class, eventBus);
 //     }
 //    
-     @Bean
-     @Transactional
-     public Repository<MessagesAggregate> jpaMoneyTransferRepository(EventBus eventBus,EntityManagerProvider provider) {
-     return new GenericJpaRepository<>(provider, MessagesAggregate.class, eventBus);
-     }
-    
+//     @Bean
+//     @Transactional
+//     public Repository<MessagesAggregate> jpaMoneyTransferRepository(EventBus eventBus,EntityManagerProvider provider) {
+//    	 EventCountSnapshotTriggerDefinition snapshotTriggerDefinition = new EventCountSnapshotTriggerDefinition(
+//                 snapshotter,
+//                 50);
+//    	 GenericJpaRepository repo= new GenericJpaRepository<>(provider, MessagesAggregate.class, eventBus);
+//    	 return repo;
+//     }
+//    
    
      
+     @Bean
+     public SpringAggregateSnapshotterFactoryBean snapshotter() {
+         return new SpringAggregateSnapshotterFactoryBean();
+     }
+     
+//     @Bean
+//     public Repository<MessagesAggregate> myAggregateRepository(EventStore eventStore, Snapshotter snapshotter) {
+//         return new EventSourcingRepository<>(MessagesAggregate.class, eventStore, new EventCountSnapshotTriggerDefinition(snapshotter, 100));
+//     }
      @Bean
      public EntityManagerProvider entityManagerProvider() {
     	 ContainerManagedEntityManagerProvider entityManagerprovider= new ContainerManagedEntityManagerProvider();
@@ -165,8 +187,8 @@ public class AxonConfiguration {
     }
 	
 	@Bean
-    public EventSourcingRepository eventSourcingRepository(EventStore eventStore){
-    	return new EventSourcingRepository<>(MessagesAggregate.class, eventStore);
+    public EventSourcingRepository eventSourcingRepository(EventStore eventStore, Snapshotter snapshotter){
+    	return new EventSourcingRepository<>(MessagesAggregate.class, eventStore,new EventCountSnapshotTriggerDefinition(snapshotter, 100));
     }
 	
 	@Bean
