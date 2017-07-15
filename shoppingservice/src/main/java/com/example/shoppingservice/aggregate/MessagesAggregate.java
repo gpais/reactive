@@ -1,5 +1,8 @@
 package com.example.shoppingservice.aggregate;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventhandling.EventHandler;
@@ -12,9 +15,11 @@ import com.example.shoppingservice.event.MessageReadEvent;
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 
+//@Entity
 public class MessagesAggregate {
 
     @AggregateIdentifier
+//    @Id
     private String id;
     
     private String status;

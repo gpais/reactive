@@ -1,6 +1,21 @@
 server:
   port: 8090
 spring:
+  datasource:
+     driver-class-name: org.h2.Driver
+     url: jdbc:h2:~/test
+     username: sa
+     password:
+     testWhileIdle: true
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        ddl-auto: validate
+        naming:
+            strategy: org.hibernate.cfg.ImprovedNamingStrategy
+            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   application:
     name: shoppingservice
 management:
@@ -10,4 +25,4 @@ management:
     health:
         mail:
             enabled: false # When using the MailService, configure an SMTP server and set this to true
-      
+    
